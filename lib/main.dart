@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-//TODO: http kütüphanesini ekleyiniz.
 
 void main() {
   runApp(MyApp());
@@ -34,11 +33,12 @@ class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _capitalController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
 
-  List<Map<dynamic,dynamic>> _list = [];
+  List<Map<dynamic, dynamic>> _list = [];
 
   Future<void> _fetchCountries() async {
-    var response = await http.get(Uri.parse("http://8a11-34-71-84-212.ngrok-free.app/countries"));
-    
+    var response = await http
+        .get(Uri.parse("http://8a11-34-71-84-212.ngrok-free.app/countries"));
+
     if (response.statusCode == 200) {
       setState(() {
         _list = List<Map<String, dynamic>>.from(jsonDecode(response.body));
@@ -49,49 +49,42 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> _createCountry() async {
-
-
     var response = await http.post(
-  Uri.parse("http://8a11-34-71-84-212.ngrok-free.app/countries"),
-  headers: <String, String>{
-    'Content-Type': 'application/json; charset=UTF-8',
-  },
-  body: jsonEncode(<dynamic, dynamic>{
-    'area': int.parse(_areaController.text),
-    'capital': _capitalController.text,
-    'name': _nameController.text,
-  }),
-);
+      Uri.parse("http://8a11-34-71-84-212.ngrok-free.app/countries"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<dynamic, dynamic>{
+        'area': int.parse(_areaController.text),
+        'capital': _capitalController.text,
+        'name': _nameController.text,
+      }),
+    );
 
-if (response.statusCode == 201) {
-  setState(() {
-    _areaController.clear();
-    _capitalController.clear();
-    _nameController.clear();
-  });
-  _fetchCountries();
-} else {
-  throw Exception('Failed to create country');
-}
-
+    if (response.statusCode == 201) {
+      setState(() {
+        _areaController.clear();
+        _capitalController.clear();
+        _nameController.clear();
+      });
+      _fetchCountries();
+    } else {
+      throw Exception('Failed to create country');
+    }
   }
 
   Future<void> _updateCountry(int id) async {
     var response = await http.put(
-  Uri.parse("http://8a11-34-71-84-212.ngrok-free.app/countries/$id"),
-  headers: <String, String>{
-    'Content-Type': 'application/json; charset=UTF-8',
-  },
-  body: jsonEncode(<dynamic, dynamic>{
-    'area': int.parse(_areaController.text),
-    'capital': _capitalController.text,
-    'name': _nameController.text
-  }),
-  
-);
-
-    
-//TODO:[false] kısmını geri dönen [statusCode] 200 ise cevabı yazdıracak şekilde değiştirin.
+      Uri.parse("http://8a11-34-71-84-212.ngrok-free.app/countries/$id"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<dynamic, dynamic>{
+        'area': int.parse(_areaController.text),
+        'capital': _capitalController.text,
+        'name': _nameController.text
+      }),
+    );
     if (response.statusCode == 200) {
       setState(() {
         _areaController.clear();
@@ -105,8 +98,8 @@ if (response.statusCode == 201) {
   }
 
   Future<void> _deleteCountry(int id) async {
-    var response = await http.delete(Uri.parse("http://8a11-34-71-84-212.ngrok-free.app/countries/$id"));
-    //TODO:[false] kısmını geri dönen [statusCode] 200 ise cevabı yazdıracak şekilde değiştirin.
+    var response = await http.delete(
+        Uri.parse("http://8a11-34-71-84-212.ngrok-free.app/countries/$id"));
     if (response.statusCode == 200) {
       _fetchCountries();
     } else {
@@ -133,29 +126,28 @@ if (response.statusCode == 201) {
           children: <Widget>[
             TextField(
               controller: _areaController,
-              decoration: InputDecoration(
-                hintText: 'Enter area',
+              decoration: const InputDecoration(
+                hintText:  'Enter area',
               ),
             ),
             TextField(
               controller: _capitalController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Enter capital',
               ),
             ),
-
             TextField(
               controller: _nameController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Enter name',
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: _createCountry,
-              child: Text('Create Country'),
+              child:const Text('Create Country'),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Expanded(
               child: ListView.builder(
                 itemCount: _list.length,
@@ -166,31 +158,31 @@ if (response.statusCode == 201) {
                     children: <Widget>[
                       Text(
                         country["name"],
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
                         ),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Text(country["area"].toString()),
                       Text(country["capital"]),
                       Text(country["id"].toString()),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           ElevatedButton(
                             onPressed: () => _updateCountry(country['id']),
-                            child: Text('Edit'),
+                            child: const Text('Edit'),
                           ),
                           ElevatedButton(
                             onPressed: () => _deleteCountry(country['id']),
-                            child: Text('Delete'),
+                            child: const Text('Delete'),
                           ),
                         ],
                       ),
-                      SizedBox(height: 16),
-                      Divider(),
+                      const SizedBox(height: 16),
+                      const Divider(),
                     ],
                   );
                 },
