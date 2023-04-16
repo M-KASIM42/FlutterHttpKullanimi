@@ -32,6 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController _areaController = TextEditingController();
   final TextEditingController _capitalController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
+  
 
   List<Map<dynamic, dynamic>> _list = [];
 
@@ -126,6 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             TextField(
               controller: _areaController,
+              keyboardType: TextInputType.number,
               decoration: const InputDecoration(
                 hintText:  'Enter area',
               ),
